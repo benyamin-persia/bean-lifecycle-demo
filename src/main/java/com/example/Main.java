@@ -12,8 +12,13 @@ public class Main {
         printTitle("SPRING WORKFLOW LESSON");
         System.out.println("Step 1: main() starts.");
         System.out.println("        We did NOT manually create DatabaseService, UserService, or ShoppingCart.");
+        System.out.println("        This is the main idea of IoC: our code gives control of object creation to Spring.");
+        System.out.println("        IoC means Inversion of Control.");
+        System.out.println("        Normal Java: Main controls objects with new DatabaseService().");
+        System.out.println("        Spring IoC: Spring controls objects, and Main asks Spring for them.");
         System.out.println("Step 2: We create the Spring container using AnnotationConfigApplicationContext(AppConfig.class).");
-        System.out.println("        This tells Spring: read AppConfig annotations and prepare the beans.\n");
+        System.out.println("        This container is the IoC container.");
+        System.out.println("        It reads AppConfig annotations and prepares the beans.\n");
 
         AnnotationConfigApplicationContext context =
                 new AnnotationConfigApplicationContext(AppConfig.class);
@@ -21,12 +26,18 @@ public class Main {
         System.out.println("\nStep 3: Spring container is ready.");
         System.out.println("        During startup, Spring already created singleton beans.");
         System.out.println("        Prototype beans are different: Spring waits until we ask for one.\n");
+        System.out.println("IoC dataflow:");
+        System.out.println("        Main -> Spring container: please manage my objects.");
+        System.out.println("        Spring container -> objects: create, initialize, store, destroy.");
+        System.out.println("        Main -> Spring container: getBean(...) when I need an object.\n");
 
+        printIoCConcept();
         printBeanMap(context);
 
         printTitle("USER SERVICE LIFECYCLE TEST (@Bean)");
         System.out.println("Dataflow: Main asks Spring for UserService.");
         System.out.println("Logic: UserService came from AppConfig.userService(), because that method has @Bean.");
+        System.out.println("IoC point: Main does NOT call new UserService(). Spring already controls that object.");
         UserService userService = context.getBean(UserService.class);
         System.out.println("Main received UserService object: " + objectLabel(userService));
         System.out.println("Now Main calls a business method on that object.");
@@ -36,6 +47,8 @@ public class Main {
         System.out.println("DatabaseService uses @Service.");
         System.out.println("@Service means Spring discovers this class during @ComponentScan.");
         System.out.println("Default scope is singleton, so Spring creates ONE object and reuses it.\n");
+        System.out.println("IoC point: DatabaseService is not created by Main.");
+        System.out.println("           It is created by Spring during container startup, then stored inside the IoC container.\n");
 
         System.out.println("Main -> Spring: getBean(DatabaseService.class) request #1");
         DatabaseService db1 = context.getBean(DatabaseService.class);
@@ -60,6 +73,8 @@ public class Main {
         System.out.println("ShoppingCart uses @Component and @Scope(\"prototype\").");
         System.out.println("@Component means Spring discovers it during scanning.");
         System.out.println("prototype means Spring creates a NEW object every time getBean() is called.\n");
+        System.out.println("IoC point: Main does not decide HOW to create the cart.");
+        System.out.println("           Main only asks Spring. Spring applies the prototype rule.\n");
 
         System.out.println("Main -> Spring: getBean(ShoppingCart.class) request #1");
         ShoppingCart cart1 = context.getBean(ShoppingCart.class);
@@ -104,6 +119,7 @@ public class Main {
         printTitle("SHUTDOWN");
         System.out.println("Main -> Spring: context.close()");
         System.out.println("Spring will now destroy singleton beans and call @PreDestroy where available.");
+        System.out.println("IoC point: Spring also controls the shutdown lifecycle of singleton beans.");
         context.close();
         System.out.println("Program finished.");
     }
@@ -129,6 +145,22 @@ public class Main {
                 System.out.println("- " + beanName);
             }
         }
+    }
+
+    private static void printIoCConcept() {
+        printTitle("IOC CONCEPT (INVERSION OF CONTROL)");
+        System.out.println("Without IoC:");
+        System.out.println("Main controls everything:");
+        System.out.println("    DatabaseService db = new DatabaseService();");
+        System.out.println("    ShoppingCart cart = new ShoppingCart();");
+        System.out.println("Main must know how to create every dependency.\n");
+
+        System.out.println("With Spring IoC:");
+        System.out.println("Spring controls object creation and lifecycle.");
+        System.out.println("Main only asks:");
+        System.out.println("    DatabaseService db = context.getBean(DatabaseService.class);");
+        System.out.println("This is why we say control is inverted:");
+        System.out.println("    control moves from your code to the Spring container.");
     }
 
     private static String objectLabel(Object object) {
