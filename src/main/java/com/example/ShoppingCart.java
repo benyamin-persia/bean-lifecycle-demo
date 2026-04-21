@@ -18,6 +18,9 @@ import java.util.UUID;
 // @Component lets Spring discover ShoppingCart during @ComponentScan.
 @Component
 // @Scope is the instruction; ConfigurableBeanFactory.SCOPE_PROTOTYPE is Spring's safe constant for "prototype".
+// Other values can go in @Scope(...), like "singleton", "request", or "session".
+// "request" means one object for one HTTP request, usually too short-lived for a cart.
+// "session" means one object for one customer's session, often better for a real web shopping cart.
 @Scope(ConfigurableBeanFactory.SCOPE_PROTOTYPE)
 // ShoppingCart demonstrates prototype behavior: a new object for each getBean call.
 public class ShoppingCart {

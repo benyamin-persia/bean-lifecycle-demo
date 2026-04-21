@@ -284,8 +284,13 @@ public class Main {
         System.out.println("        Constant form: ConfigurableBeanFactory.SCOPE_PROTOTYPE");
         System.out.println("    @Scope(\"request\")");
         System.out.println("        One object per HTTP request in a Spring web app.");
+        System.out.println("        Shopping example: one temporary object for one click/page request.");
+        System.out.println("        When that request ends, the request-scoped object is finished.");
+        System.out.println("        Usually NOT enough for a shopping cart because the cart should survive many clicks.");
         System.out.println("    @Scope(\"session\")");
         System.out.println("        One object per user's HTTP session in a Spring web app.");
+        System.out.println("        Shopping example: one cart for one customer while they browse the site.");
+        System.out.println("        Usually better for a real web shopping cart than request scope.");
         System.out.println("    @Scope(\"application\")");
         System.out.println("        One object for the whole web application.");
         System.out.println("    @Scope(\"websocket\")");
@@ -293,6 +298,7 @@ public class Main {
 
         System.out.println("For this console lesson, singleton and prototype are the important ones.");
         System.out.println("Web scopes need a web-aware Spring ApplicationContext.");
+        System.out.println("For a real shopping website, session scope often matches the cart workflow better than request scope.");
     }
 
     // Helper method that prints a Java object's class name and memory identity hash.
