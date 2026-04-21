@@ -184,13 +184,23 @@ public class Main {
         System.out.println("    Used on a class.");
         System.out.println("    Means: this class is a Spring bean candidate.");
         System.out.println("    Spring can create and manage an object from this class automatically.");
-        System.out.println("    In this project: ShoppingCart has @Component.\n");
+        System.out.println("    In this project: ShoppingCart has @Component.");
+        System.out.println("    Use @Component when the class is a general Spring-managed object.\n");
 
         System.out.println("@Service");
         System.out.println("    Used on a class.");
         System.out.println("    Means: this class is a service/business-logic component.");
         System.out.println("    Important: @Service works like @Component, but gives the class a clearer meaning.");
-        System.out.println("    In this project: DatabaseService has @Service.\n");
+        System.out.println("    In this project: DatabaseService has @Service.");
+        System.out.println("    Use @Service when the class performs application logic, data access logic, or business work.\n");
+
+        System.out.println("@Scope");
+        System.out.println("    Used on a Spring bean class or @Bean method.");
+        System.out.println("    Means: tells Spring HOW MANY objects to create and WHEN to reuse them.");
+        System.out.println("    Default scope is singleton: one object shared every time.");
+        System.out.println("    Prototype scope means: create a new object every time getBean() is called.");
+        System.out.println("    In this project: ShoppingCart has @Scope(\"prototype\").");
+        System.out.println("    That is why every customer gets a different cart object.\n");
 
         System.out.println("@Bean");
         System.out.println("    Used on a method inside a @Configuration class.");
@@ -201,6 +211,11 @@ public class Main {
         System.out.println("    @Service: put it on the class, and Spring finds the class by scanning.");
         System.out.println("    @Bean: put it on a method, and YOU write the method that creates/returns the object.");
         System.out.println("    Both create Spring beans. They are two different ways to register objects in Spring.");
+        System.out.println("\nQuick difference: @Component vs @Service");
+        System.out.println("    @Component: general Spring-managed class.");
+        System.out.println("    @Service: also a Spring-managed class, but specifically for service/business logic.");
+        System.out.println("    Technically Spring treats both as components during scanning.");
+        System.out.println("    The difference is meaning/readability for humans and project organization.");
     }
 
     private static String objectLabel(Object object) {
