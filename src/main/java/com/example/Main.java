@@ -183,6 +183,12 @@ public class Main {
     }
 
     // Helper method that explains IoC before the object examples.
+    // The parentheses are empty because this method does not need outside input.
+    // Parentheses are where method parameters go.
+    // Example with no parameter: printIoCConcept()
+    // Example with one parameter: printIoCConcept(String studentName)
+    // Example with two parameters: printIoCConcept(String topic, int lessonNumber)
+    // This method prints fixed text, so we leave the parentheses empty.
     private static void printIoCConcept() {
         printTitle("IOC CONCEPT (INVERSION OF CONTROL)");
         System.out.println("Without IoC:");
